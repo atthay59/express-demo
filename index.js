@@ -4,6 +4,8 @@ const Joi = require('joi');
 const logger = require('./logger');
 
 app.use(express.json());
+app.use(express.urlencoded()); //key=value&key=value
+app.use(express.static('public'));
 
 app.use(logger);
 
