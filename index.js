@@ -4,13 +4,24 @@ const Joi = require('joi');
 const logger = require('./logger');
 const helmet = require('helmet');
 const morgan = require('morgan');
+const config = require('config');
+
+/* console.log(`NODE_ENV: ${process.env.NODE_ENV}`)
+console.log(`app: ${app.get('env')}`) */
 
 app.use(express.json());
 app.use(express.urlencoded()); //key=value&key=value
 app.use(express.static('public'));
 app.use(logger);
 app.use(helmet());
-app.use(morgan('tiny'));
+
+console.log('Application Name: ' + config.get('name'));
+console.log('Mail Server: ' + config.get('mail.host'));
+
+if (app.get('env') === 'development') {
+  app.use(morgan('tiny'));
+  console.log('Morgan enabled...')
+}
 
 app.use(function(req, res, next) {
   console.log('Authentication...');
