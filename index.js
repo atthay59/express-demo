@@ -1,8 +1,16 @@
 const express = require("express");
 const app = express();
 const Joi = require('joi');
+const logger = require('./logger');
 
 app.use(express.json());
+
+app.use(logger);
+
+app.use(function(req, res, next) {
+  console.log('Authentication...');
+  next();
+});
 
 const courses = [
   { id : 1, name : 'courses 1'},
@@ -61,7 +69,7 @@ app.delete('/api/courses/:id', (req, res) => {
 
 function validateCourse(course) {
   const schema = {
-    name: Joi.string().min(4).required()
+    name: Joi.string().min(3).required()
   };
 
   return Joi.validate(course, schema); 
